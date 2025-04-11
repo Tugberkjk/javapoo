@@ -10,6 +10,8 @@ import fr.ubx.poo.ubgarden.game.launcher.MapLevel;
 import java.util.Collection;
 import java.util.HashMap;
 
+import static fr.ubx.poo.ubgarden.game.launcher.MapEntity.PoisonedApple;
+
 public class Level implements Map {
     private Position hedgehogPosition;
     private final int level;
@@ -37,15 +39,52 @@ public class Level implements Map {
                     case Grass:
                         decors.put(position, new Grass(position));
                         break;
+                    case Soil:
+                        decors.put(position, new Soil(position));
+                        break;
+                    case FlowerBush:
+                        decors.put(position, new FlowerBush(position));
+                        break;
                     case Tree:
                         decors.put(position, new Tree(position));
                         break;
+                    case WaspNest:
+                        decors.put(position, new WaspNest(position));
+                        break;
+
+                    case HornetNest:
+                        decors.put(position, new HornetNest(position));
+                        break;
+
+                    case DoorClosed:
+                        decors.put(position, new DoorClosed(position));
+                        break;
+
+                    case DoorOpened:
+                        decors.put(position, new DoorOpened(position));
+                        break;
+                    case Carrot:
+                        decors.put(position, new Carrot(position));
+                        break;
+
                     case Apple: {
                         Decor grass = new Grass(position);
                         grass.setBonus(new EnergyBoost(position, grass));
                         decors.put(position, grass);
                         break;
                     }
+                    case PoisonedApple: {
+                        Decor grass = new Grass(position);
+                        grass.setBonus(new PoisonedApple(position, grass));
+                        decors.put(position, grass);
+                        break;
+                    }
+                    case Bomb:
+                        decors.put(position, new Bomb(position));
+                        break;
+                    case Gardener:
+                        decors.put(position, new Grass(position));
+                        break;
                     default:
                         throw new RuntimeException("EntityCode " + mapEntity.name() + " not processed");
                 }
