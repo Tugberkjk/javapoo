@@ -1,8 +1,7 @@
 package fr.ubx.poo.ubgarden.game;
 
 import fr.ubx.poo.ubgarden.game.go.bonus.EnergyBoost;
-import fr.ubx.poo.ubgarden.game.go.decor.Decor;
-import fr.ubx.poo.ubgarden.game.go.decor.Tree;
+import fr.ubx.poo.ubgarden.game.go.decor.*;
 import fr.ubx.poo.ubgarden.game.go.decor.ground.Grass;
 import fr.ubx.poo.ubgarden.game.launcher.MapEntity;
 import fr.ubx.poo.ubgarden.game.launcher.MapLevel;
@@ -39,32 +38,32 @@ public class Level implements Map {
                     case Grass:
                         decors.put(position, new Grass(position));
                         break;
-                    case Soil:
-                        decors.put(position, new Soil(position));
+                    case Land:
+                        decors.put(position, new Land(position));
                         break;
-                    case FlowerBush:
-                        decors.put(position, new FlowerBush(position));
+                    case Flowers:
+                        decors.put(position, new Flowers(position));
                         break;
                     case Tree:
                         decors.put(position, new Tree(position));
                         break;
-                    case WaspNest:
-                        decors.put(position, new WaspNest(position));
+                    case NestWasp:
+                        decors.put(position, new NestWasp(position));
                         break;
 
-                    case HornetNest:
-                        decors.put(position, new HornetNest(position));
+                    case NestHornet:
+                        decors.put(position, new NestHornet(position));
                         break;
 
-                    case DoorClosed:
-                        decors.put(position, new DoorClosed(position));
+                    case DoorNextClosed:
+                        decors.put(position, new DoorNextClosed(position));
                         break;
 
-                    case DoorOpened:
-                        decors.put(position, new DoorOpened(position));
+                    case DoorNextOpened:
+                        decors.put(position, new DoorNextOpened(position));
                         break;
-                    case Carrot:
-                        decors.put(position, new Carrot(position));
+                    case Carrots:
+                        decors.put(position, new Carrots(position));
                         break;
 
                     case Apple: {
@@ -75,7 +74,7 @@ public class Level implements Map {
                     }
                     case PoisonedApple: {
                         Decor grass = new Grass(position);
-                        grass.setBonus(new PoisonedApple(position, grass));
+                        grass.setBonus(new PoisonedApple(position).getBonus());
                         decors.put(position, grass);
                         break;
                     }
