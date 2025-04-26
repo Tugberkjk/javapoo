@@ -11,8 +11,10 @@ import fr.ubx.poo.ubgarden.game.go.GameObject;
 import fr.ubx.poo.ubgarden.game.go.Movable;
 import fr.ubx.poo.ubgarden.game.go.PickupVisitor;
 import fr.ubx.poo.ubgarden.game.go.WalkVisitor;
-import fr.ubx.poo.ubgarden.game.go.bonus.EnergyBoost;
 import fr.ubx.poo.ubgarden.game.go.decor.Decor;
+import fr.ubx.poo.ubgarden.game.go.bonus.EnergyBoost;
+import fr.ubx.poo.ubgarden.game.go.decor.PoisonedApple;
+import fr.ubx.poo.ubgarden.game.go.decor.Bomb;
 
 public class Gardener extends GameObject implements Movable, PickupVisitor, WalkVisitor {
 
@@ -21,7 +23,7 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
     private boolean moveRequested = false;
     private long lastMoveTime = 0;
     private long lastEnergyGainTime = 0;
-    private int fatigueLevel = 0;
+    private int fatigueLevel = 1;
     private int bombCount = 0;
 
     public int getFatigueLevel() {
@@ -58,8 +60,22 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
 
     @Override
     public void pickUp(EnergyBoost energyBoost) {
-// TODO
-        System.out.println("I am taking the boost, I should do something ...");
+        energy += game.configuration().energyBoost();
+        if (energy > game.configuration().gardenerEnergy()) {
+            energy = game.configuration().gardenerEnergy();
+        }
+        fatigueLevel = 1;
+        energyBoost.remove();
+    }
+    public void pickUp(PoisonedApple poisonedApple) {
+        increaseFatigue();
+        poisonedApple.remove();
+    }
+
+    public void pickUp(Bomb bomb) {
+        addBomb();
+        bomb.remove();
+    }
 
     }
 
@@ -129,6 +145,7 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
     }
 
     public void hurt(int damage) {
+        setEnergy(getEnergy() - damage);
     }
 
     public void hurt() {
