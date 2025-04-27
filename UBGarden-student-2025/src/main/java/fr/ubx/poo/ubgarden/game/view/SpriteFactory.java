@@ -11,6 +11,8 @@ import fr.ubx.poo.ubgarden.game.go.decor.Tree;
 import fr.ubx.poo.ubgarden.game.go.decor.ground.Grass;
 import fr.ubx.poo.ubgarden.game.go.decor.Carrots;
 import fr.ubx.poo.ubgarden.game.go.decor.Land;
+import fr.ubx.poo.ubgarden.game.go.decor.DoorNextClosed;
+import fr.ubx.poo.ubgarden.game.go.decor.DoorNextOpened;
 import javafx.scene.layout.Pane;
 
 import static fr.ubx.poo.ubgarden.game.view.ImageResource.*;
@@ -32,6 +34,10 @@ public final class SpriteFactory {
             return new Sprite(layer, factory.get(LAND), gameObject);
         if (gameObject instanceof Carrots)
             return new Sprite(layer, factory.get(CARROTS), gameObject);
+        if (gameObject instanceof DoorNextClosed)
+            return new Sprite(layer, factory.get(DOOR_CLOSED), gameObject);
+        if (gameObject instanceof DoorNextOpened)
+            return new Sprite(layer, factory.get(DOOR_OPENED), gameObject);
         throw new RuntimeException("Unsupported sprite for decor " + gameObject);
     }
 }

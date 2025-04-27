@@ -186,7 +186,10 @@
                 if (decor instanceof DoorNextClosed) {
                     Position pos = decor.getPosition();
                     decor.remove();
-                    ((Level) game.world().getGrid()).set(pos, new DoorNextOpened(pos));
+                    DoorNextOpened openedDoor = new DoorNextOpened(pos);
+                    ((Level) game.world().getGrid()).set(pos, openedDoor);
+                    sprites.add(SpriteFactory.create(layer, openedDoor));
+                    openedDoor.setModified(true);
                 }
             }
         }

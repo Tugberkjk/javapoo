@@ -12,6 +12,7 @@ import fr.ubx.poo.ubgarden.game.go.Movable;
 import fr.ubx.poo.ubgarden.game.go.PickupVisitor;
 import fr.ubx.poo.ubgarden.game.go.WalkVisitor;
 import fr.ubx.poo.ubgarden.game.go.decor.Decor;
+import fr.ubx.poo.ubgarden.game.go.decor.Land;
 import fr.ubx.poo.ubgarden.game.go.bonus.EnergyBoost;
 import fr.ubx.poo.ubgarden.game.go.decor.PoisonedApple;
 import fr.ubx.poo.ubgarden.game.go.decor.Bomb;
@@ -126,7 +127,11 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
                 decor.getBonus().pickUpBy(this);
             }
         }
-        setEnergy(getEnergy() - 1);
+        if (decor instanceof Land) {
+            setEnergy(getEnergy() - 2 * getFatigueLevel());
+        } else {
+            setEnergy(getEnergy() - 1 * getFatigueLevel());
+        }
         return getPosition();
     }
 
