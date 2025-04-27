@@ -77,7 +77,6 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
         bomb.remove();
     }
 
-    }
 
     @Override
     public void setEnergy(int energy) {
