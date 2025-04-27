@@ -5,6 +5,11 @@
     package fr.ubx.poo.ubgarden.game.engine;
 
     import fr.ubx.poo.ubgarden.game.Direction;
+    import fr.ubx.poo.ubgarden.game.Position;
+    import fr.ubx.poo.ubgarden.game.Level;
+    import fr.ubx.poo.ubgarden.game.go.decor.Carrots;
+    import fr.ubx.poo.ubgarden.game.go.decor.DoorNextClosed;
+    import fr.ubx.poo.ubgarden.game.go.decor.DoorNextOpened;
     import fr.ubx.poo.ubgarden.game.Game;
     import fr.ubx.poo.ubgarden.game.go.personage.Gardener;
     import fr.ubx.poo.ubgarden.game.view.ImageResource;
@@ -171,6 +176,18 @@
             if (gardener.getEnergy() < 0) {
                 gameLoop.stop();
                 showMessage("Perdu!", Color.RED);
+            }
+            for (var decor : game.world().getGrid().values()) {
+                if (decor != null && decor.getBonus() instanceof Carrots) {
+                    return;
+                }
+            }
+            for (var decor : game.world().getGrid().values()) {
+                if (decor instanceof DoorNextClosed) {
+                    Position pos = decor.getPosition();
+                    decor.remove();
+                    ((Level) game.world().getGrid()).set(pos, new DoorNextOpened(pos));
+                }
             }
         }
 

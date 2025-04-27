@@ -62,10 +62,12 @@ public class Level implements Map {
                     case DoorNextOpened:
                         decors.put(position, new DoorNextOpened(position));
                         break;
-                    case Carrots:
-                        decors.put(position, new Carrots(position));
+                    case Carrots: {
+                        Decor ground = new Land(position);
+                        ground.setBonus(new Carrots(position, ground));
+                        decors.put(position, ground);
                         break;
-
+                    }
                     case Apple: {
                         Decor grass = new Grass(position);
                         grass.setBonus(new EnergyBoost(position, grass));
@@ -117,6 +119,11 @@ public class Level implements Map {
         int x = position.x();
         int y = position.y();
         return x >= 0 && x < width && y >= 0 && y < height;
+    }
+    public void set(Position position, Decor decor) {
+        if (inside(position)) {
+            decors.put(position, decor);
+        }
     }
 
 }

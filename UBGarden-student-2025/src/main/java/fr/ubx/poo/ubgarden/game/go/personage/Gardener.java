@@ -118,11 +118,15 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
             return getPosition();
         }
         setPosition(nextPos);
-        setEnergy(getEnergy() - 1);
+
         Decor decor = game.world().getGrid().get(nextPos);
         if (decor != null) {
             decor.pickUpBy(this);
+            if (decor.getBonus() != null) {
+                decor.getBonus().pickUpBy(this);
+            }
         }
+        setEnergy(getEnergy() - 1);
         return getPosition();
     }
 
