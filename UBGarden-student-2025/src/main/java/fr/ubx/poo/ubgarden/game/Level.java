@@ -51,7 +51,7 @@ public class Level implements Map {
                         decors.put(position, new Tree(position));
                         break;
                     case NestWasp:
-                        decors.put(position, new NestWasp(position));
+                        decors.put(position, new NestWasp(game,position));
                         break;
 
                     case NestHornet:

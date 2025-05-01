@@ -10,7 +10,9 @@ public class Apple extends Bonus {
     }
 
     @Override
-    public void pickUpBy(Gardener g) {
+    public void pickUpBy(Gardener gardener) {
+        gardener.setEnergy(gardener.getGame().configuration().gardenerEnergy());
+        gardener.setFatigueLevel(1);
         this.remove();
     }
 }

@@ -27,6 +27,7 @@
     import javafx.scene.text.Font;
     import javafx.scene.text.Text;
     import javafx.scene.text.TextAlignment;
+    import fr.ubx.poo.ubgarden.game.go.personage.Wasp;
 
     import java.util.*;
 
@@ -47,6 +48,9 @@
         private final Group root = new Group();
         private final Pane layer = new Pane();
         private Input input;
+        private long lastWaspHitTime = 0; // === NEW: Çarpışma cooldown'u için zaman damgası
+        private static final long WASP_HIT_COOLDOWN = 1000; // 1000 ms = 1 saniye
+
 
         public GameEngine(Game game, Scene scene) {
             this.game = game;
@@ -91,6 +95,10 @@
 
             sprites.add(new SpriteGardener(layer, gardener));
             resizeScene(sceneWidth, sceneHeight);
+            for (var wasp : game.getActiveWasps()) {
+                sprites.add(SpriteFactory.create(layer, wasp));
+                wasp.setModified(true);
+            }
         }
 
         void buildAndSetGameLoop() {
@@ -148,9 +156,23 @@
             initialize();
         }
 
+        // Check a collision between the gardener and a wasp or an hornet
         private void checkCollision() {
-            // Check a collision between the gardener and a wasp or an hornet
+            long now = System.currentTimeMillis();
+            for (Sprite sprite : sprites) {
+                if (sprite.getGameObject() instanceof Wasp) {
+                    Wasp wasp = (Wasp) sprite.getGameObject();
+                    if (wasp.getPosition().equals(gardener.getPosition()) && (now - lastWaspHitTime) >= WASP_HIT_COOLDOWN) {
+                        gardener.hurt(20);
+                        if (gardener.getEnergy() < 0) {
+                            gardener.setEnergy(0); // Enerjiyi sıfırın altına düşürme
+                        }
+                        lastWaspHitTime = now;
+                    }
+                }
+            }
         }
+
 
         private void processInput() {
             if (input.isExit()) {
@@ -201,19 +223,26 @@
                 gameLoop.stop();
                 showMessage("Perdu!", Color.RED);
             }
-            for (var decor : game.world().getGrid().values()) {
-                if (decor != null && decor.getBonus() instanceof Carrots) {
-                    return;
+            boolean carrotsRemaining = game.world().getGrid().values().stream()
+                    .anyMatch(decor -> decor != null && decor.getBonus() instanceof Carrots);
+
+            if (!carrotsRemaining) {
+                for (var decor : game.world().getGrid().values()) {
+                    if (decor instanceof DoorNextClosed) {
+                        Position pos = decor.getPosition();
+                        decor.remove();
+                        DoorNextOpened openedDoor = new DoorNextOpened(pos);
+                        ((Level) game.world().getGrid()).set(pos, openedDoor);
+                        sprites.add(SpriteFactory.create(layer, openedDoor));
+                        openedDoor.setModified(true);
+                    }
                 }
             }
-            for (var decor : game.world().getGrid().values()) {
-                if (decor instanceof DoorNextClosed) {
-                    Position pos = decor.getPosition();
-                    decor.remove();
-                    DoorNextOpened openedDoor = new DoorNextOpened(pos);
-                    ((Level) game.world().getGrid()).set(pos, openedDoor);
-                    sprites.add(SpriteFactory.create(layer, openedDoor));
-                    openedDoor.setModified(true);
+
+            for (Wasp wasp : game.getActiveWasps()) {
+                wasp.update(now);
+                if (sprites.stream().noneMatch(s -> s.getGameObject() == wasp)) {
+                    sprites.add(SpriteFactory.create(layer, wasp));
                 }
             }
         }

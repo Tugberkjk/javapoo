@@ -27,9 +27,15 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
     private long lastEnergyGainTime = 0;
     private int fatigueLevel = 1;
     private int bombCount = 0;
+    private boolean diseased = false;
+    private long diseaseEndTime = 0;
+
 
     public int getFatigueLevel() {
         return fatigueLevel;
+    }
+    public void setFatigueLevel(int level) {
+        this.fatigueLevel = level;
     }
 
     public int getBombCount() {
@@ -69,10 +75,16 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
         fatigueLevel = 1;
         energyBoost.remove();
     }
+
     public void pickUp(PoisonedApple poisonedApple) {
         increaseFatigue();
+        setDiseased(true);
+        diseaseEndTime = System.currentTimeMillis() + game.configuration().diseaseDuration();
         poisonedApple.remove();
     }
+    public boolean isDiseased() { return diseased; }
+
+    public void setDiseased(boolean diseased) { this.diseased = diseased; }
 
     public void pickUp(Bomb bomb) {
         addBomb();
@@ -154,6 +166,11 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
                 lastEnergyGainTime = now;
             }
         }
+        if (diseased && System.currentTimeMillis() > diseaseEndTime) {
+            diseased = false;
+            fatigueLevel = 1;
+        }
+
     }
 
     public void hurt(int damage) {

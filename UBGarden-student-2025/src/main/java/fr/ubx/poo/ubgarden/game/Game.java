@@ -1,7 +1,9 @@
 package fr.ubx.poo.ubgarden.game;
 
 import fr.ubx.poo.ubgarden.game.go.personage.Gardener;
-
+import fr.ubx.poo.ubgarden.game.go.personage.Wasp;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Game {
 
@@ -10,6 +12,16 @@ public class Game {
     private final Gardener gardener;
     private boolean switchLevelRequested = false;
     private int switchLevel;
+    private final List<Wasp> activeWasps = new ArrayList<>();
+
+    public void addActiveWasp(Wasp wasp) {
+        activeWasps.add(wasp);
+    }
+
+    public List<Wasp> getActiveWasps() {
+        return activeWasps;
+    }
+
     public Game(World world, Configuration configuration, Position gardenerPosition) {
         this.configuration = configuration;
         this.world = world;

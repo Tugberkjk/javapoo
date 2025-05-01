@@ -104,16 +104,16 @@ public class GameLauncher {
             Properties props = new Properties();
             props.load(new java.io.FileReader(file));
 
-            // compression parametresi okunur ama ZORUNLU decompress yapılır
             boolean compression = Boolean.parseBoolean(props.getProperty("compression", "false"));
             int nbLevels = Integer.parseInt(props.getProperty("levels", "1"));
 
             Configuration configuration = getConfiguration(props);
             World world = new World(nbLevels);
             Position gardenerPosition = null;
+            MapLevel[] mapLevels = new MapLevel[nbLevels]; // eklendi: map seviyelerini geçici saklamak için
 
+            // Önce tüm haritaları yükle, gardener pozisyonunu yakala
             for (int level = 0; level < nbLevels; level++) {
-                // Level stringini oku ve decompress et
                 String rawLevelStr = props.getProperty("level" + (level + 1));
                 String levelStr = decompressLine(rawLevelStr);
                 System.out.println("Decompressed level string (level " + (level + 1) + "):\n" + levelStr);
@@ -137,16 +137,25 @@ public class GameLauncher {
                         throw new RuntimeException("Gardener not found in level 1");
                 }
 
-                Level levelMap = new Level(null, level + 1, mapLevel);
+                mapLevels[level] = mapLevel; // eklendi: geçici olarak sakla
+            }
+
+            // Gardener pozisyonu bulundu → şimdi Game yarat
+            Game game = new Game(world, configuration, gardenerPosition); // değiştirildi: game nesnesi önce yaratıldı
+
+            // Şimdi level’ları game ile yarat
+            for (int level = 0; level < nbLevels; level++) {
+                Level levelMap = new Level(game, level + 1, mapLevels[level]); // değiştirildi: null yerine game geçirildi
                 world.put(level + 1, levelMap);
             }
 
-            return new Game(world, configuration, gardenerPosition);
+            return game;
 
         } catch (Exception e) {
             throw new RuntimeException("Error loading game: " + e.getMessage(), e);
         }
     }
+
 
 
 
