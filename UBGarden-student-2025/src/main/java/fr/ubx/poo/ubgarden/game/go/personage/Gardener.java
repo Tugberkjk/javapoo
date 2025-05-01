@@ -14,8 +14,8 @@ import fr.ubx.poo.ubgarden.game.go.WalkVisitor;
 import fr.ubx.poo.ubgarden.game.go.decor.Decor;
 import fr.ubx.poo.ubgarden.game.go.decor.Land;
 import fr.ubx.poo.ubgarden.game.go.bonus.EnergyBoost;
-import fr.ubx.poo.ubgarden.game.go.decor.PoisonedApple;
-import fr.ubx.poo.ubgarden.game.go.decor.Bomb;
+import fr.ubx.poo.ubgarden.game.go.bonus.PoisonedApple;
+import fr.ubx.poo.ubgarden.game.go.bonus.Bomb;
 
 public class Gardener extends GameObject implements Movable, PickupVisitor, WalkVisitor {
 

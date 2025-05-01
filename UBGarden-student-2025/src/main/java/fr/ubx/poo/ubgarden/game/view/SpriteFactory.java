@@ -9,6 +9,7 @@ import fr.ubx.poo.ubgarden.game.go.bonus.EnergyBoost;
 import fr.ubx.poo.ubgarden.game.go.decor.*;
 import fr.ubx.poo.ubgarden.game.go.decor.ground.Grass;
 import javafx.scene.layout.Pane;
+import fr.ubx.poo.ubgarden.game.go.bonus.*;
 
 import static fr.ubx.poo.ubgarden.game.view.ImageResource.*;
 
@@ -21,7 +22,7 @@ public final class SpriteFactory {
             return new Sprite(layer, factory.get(GRASS), gameObject);
         if (gameObject instanceof Tree)
             return new Sprite(layer, factory.get(TREE), gameObject);
-        if (gameObject instanceof EnergyBoost)
+        if (gameObject instanceof Apple)
             return new Sprite(layer, factory.get(APPLE), gameObject);
         if (gameObject instanceof Hedgehog)
             return new Sprite(layer, factory.get(HEDGEHOG), gameObject);
@@ -35,6 +36,10 @@ public final class SpriteFactory {
             return new Sprite(layer, factory.get(DOOR_OPENED), gameObject);
         if (gameObject instanceof Flowers)
             return new Sprite(layer, factory.get(FLOWERS), gameObject);
+        if (gameObject instanceof PoisonedApple)
+            return new Sprite(layer, factory.get(POISONED_APPLE), gameObject);
+        if (gameObject instanceof Bomb)
+            return new Sprite(layer, factory.get(INSECTICIDE), gameObject);
 
         throw new RuntimeException("Unsupported sprite for decor " + gameObject);
     }

@@ -5,6 +5,7 @@ import fr.ubx.poo.ubgarden.game.go.decor.*;
 import fr.ubx.poo.ubgarden.game.go.decor.ground.Grass;
 import fr.ubx.poo.ubgarden.game.launcher.MapEntity;
 import fr.ubx.poo.ubgarden.game.launcher.MapLevel;
+import fr.ubx.poo.ubgarden.game.go.bonus.*;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -72,20 +73,23 @@ public class Level implements Map {
                         break;
                     }
                     case Apple: {
-                        Decor grass = new Grass(position);
-                        grass.setBonus(new EnergyBoost(position, grass));
-                        decors.put(position, grass);
+                        Decor ground = new Grass(position);
+                        ground.setBonus(new Apple(position, ground));
+                        decors.put(position, ground);
                         break;
                     }
                     case PoisonedApple: {
-                        Decor grass = new Grass(position);
-                        grass.setBonus(new PoisonedApple(position).getBonus());
-                        decors.put(position, grass);
+                        Decor ground = new Grass(position);
+                        ground.setBonus(new PoisonedApple(position, ground));
+                        decors.put(position, ground);
                         break;
                     }
-                    case Bomb:
-                        decors.put(position, new Bomb(position));
+                    case Bomb: {
+                        Decor ground = new Grass(position);
+                        ground.setBonus(new Bomb(position, ground));
+                        decors.put(position, ground);
                         break;
+                    }
                     case Gardener:
                         decors.put(position, new Grass(position));
                         break;

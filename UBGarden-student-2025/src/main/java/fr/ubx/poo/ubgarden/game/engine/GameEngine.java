@@ -4,10 +4,11 @@
 
     package fr.ubx.poo.ubgarden.game.engine;
 
+    import fr.ubx.poo.ubgarden.game.go.decor.*;
     import fr.ubx.poo.ubgarden.game.Direction;
     import fr.ubx.poo.ubgarden.game.Position;
     import fr.ubx.poo.ubgarden.game.Level;
-    import fr.ubx.poo.ubgarden.game.go.decor.Carrots;
+    import fr.ubx.poo.ubgarden.game.go.bonus.Carrots;
     import fr.ubx.poo.ubgarden.game.go.decor.DoorNextClosed;
     import fr.ubx.poo.ubgarden.game.go.decor.DoorNextOpened;
     import fr.ubx.poo.ubgarden.game.Game;
