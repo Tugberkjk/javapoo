@@ -39,7 +39,19 @@ public class Wasp extends GameObject implements Movable, WalkVisitor {
     @Override
     public boolean canMove(Direction direction) {
         Position next = direction.nextPosition(getPosition());
-        return game.world().getGrid().inside(next);
+        if (!game.world().getGrid().inside(next)) {
+            return false;
+        }
+
+        Decor decor = game.world().getGrid().get(next);
+
+        // Eğer next hücrede açık veya kapalı kapı varsa → geçemez
+        if (decor instanceof DoorNextOpened || decor instanceof DoorNextClosed) {
+            return false;
+        }
+
+        // Eğer hiç dekor yoksa veya diğer her durumda → geçilebilir
+        return true;
     }
 
     public void moveRandom() {

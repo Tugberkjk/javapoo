@@ -12,6 +12,6 @@ public class Bomb extends Bonus {
     @Override
     public void pickUpBy(Gardener g) {
         this.remove();
-        // g.addBomb();
+        g.addBomb();
     }
 }

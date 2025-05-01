@@ -163,15 +163,21 @@
                 if (sprite.getGameObject() instanceof Wasp) {
                     Wasp wasp = (Wasp) sprite.getGameObject();
                     if (wasp.getPosition().equals(gardener.getPosition()) && (now - lastWaspHitTime) >= WASP_HIT_COOLDOWN) {
-                        gardener.hurt(20);
-                        if (gardener.getEnergy() < 0) {
-                            gardener.setEnergy(0); // Enerjiyi sıfırın altına düşürme
+                        if (gardener.getBombCount() > 0) {
+                            gardener.setBombCount(gardener.getBombCount() - 1);
+                            wasp.remove();
+                        } else {
+                            gardener.hurt(20);
+                            if (gardener.getEnergy() < 0) {
+                                gardener.setEnergy(0); // Enerji sıfırın altına inmesin
+                            }
                         }
                         lastWaspHitTime = now;
                     }
                 }
             }
         }
+
 
 
         private void processInput() {
@@ -245,6 +251,14 @@
                     sprites.add(SpriteFactory.create(layer, wasp));
                 }
             }
+            for (var decor : game.world().getGrid().values()) {
+                var bonus = decor.getBonus();
+                if (bonus != null && sprites.stream().noneMatch(s -> s.getGameObject() == bonus)) {
+                    sprites.add(SpriteFactory.create(layer, bonus));
+                    bonus.setModified(true);
+                }
+            }
+
         }
 
 
