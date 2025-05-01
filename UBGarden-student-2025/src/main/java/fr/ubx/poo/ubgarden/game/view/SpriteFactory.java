@@ -40,6 +40,10 @@ public final class SpriteFactory {
             return new Sprite(layer, factory.get(POISONED_APPLE), gameObject);
         if (gameObject instanceof Bomb)
             return new Sprite(layer, factory.get(INSECTICIDE), gameObject);
+        if (gameObject instanceof NestWasp)
+            return new Sprite(layer, factory.get(NESTWASP), gameObject);
+        if (gameObject instanceof NestHornet)
+            return new Sprite(layer, factory.get(NESTHORNET), gameObject);
 
         throw new RuntimeException("Unsupported sprite for decor " + gameObject);
     }

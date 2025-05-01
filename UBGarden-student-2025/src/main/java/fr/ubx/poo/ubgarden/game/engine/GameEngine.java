@@ -115,14 +115,37 @@
 
 
         private void checkLevel() {
-            if (game.isSwitchLevelRequested()) {
-                // Find the new level to switch to
-                // clear all sprites
-                // change the current level
-                // Find the position of the door to reach
-                // Set the position of the gardener
-                // initialize();
+            if (!game.isSwitchLevelRequested())
+                return;
+
+            int nextLevel = game.getSwitchLevel();
+
+            if (game.world().getGrid(nextLevel) == null) {
+                System.out.println("Level " + nextLevel + " not loaded!");
+                return;
             }
+
+            sprites.clear();
+            layer.getChildren().clear();
+
+            game.world().setCurrentLevel(nextLevel);
+
+
+            Position doorPos = null;
+            for (var entry : game.world().getGrid().values()) {
+                if (entry instanceof DoorNextOpened) {
+                    doorPos = entry.getPosition();
+                    break;
+                }
+            }
+
+            if (doorPos == null) {
+                System.out.println("No DoorNextOpened found in level " + nextLevel);
+                doorPos = new Position(nextLevel, 0, 0);
+            }
+            gardener.setPosition(doorPos);
+            game.clearSwitchLevel();
+            initialize();
         }
 
         private void checkCollision() {

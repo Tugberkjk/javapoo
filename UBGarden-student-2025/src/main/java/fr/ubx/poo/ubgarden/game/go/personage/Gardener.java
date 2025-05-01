@@ -16,6 +16,7 @@ import fr.ubx.poo.ubgarden.game.go.decor.Land;
 import fr.ubx.poo.ubgarden.game.go.bonus.EnergyBoost;
 import fr.ubx.poo.ubgarden.game.go.bonus.PoisonedApple;
 import fr.ubx.poo.ubgarden.game.go.bonus.Bomb;
+import fr.ubx.poo.ubgarden.game.go.decor.DoorNextOpened;
 
 public class Gardener extends GameObject implements Movable, PickupVisitor, WalkVisitor {
 
@@ -131,6 +132,9 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
             setEnergy(getEnergy() - 2 * getFatigueLevel());
         } else {
             setEnergy(getEnergy() - 1 * getFatigueLevel());
+        }
+        if (decor instanceof DoorNextOpened) {
+            game.requestSwitchLevel(getPosition().level() + 1);
         }
         return getPosition();
     }
