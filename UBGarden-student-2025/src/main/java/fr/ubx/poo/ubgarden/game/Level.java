@@ -34,8 +34,10 @@ public class Level implements Map {
                 switch (mapEntity) {
                     case Hedgehog:
                         this.hedgehogPosition = position;
-                        decors.put(position, new Grass(position));
+                        Hedgehog hedgehog = new Hedgehog(position);
+                        decors.put(position, hedgehog);
                         break;
+
                     case Grass:
                         decors.put(position, new Grass(position));
                         break;
