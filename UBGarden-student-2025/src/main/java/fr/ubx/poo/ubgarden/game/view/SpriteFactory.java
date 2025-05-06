@@ -40,6 +40,8 @@ public final class SpriteFactory {
             return new Sprite(layer, factory.get(DOOR_CLOSED), gameObject);
         if (gameObject instanceof DoorNextOpened)
             return new Sprite(layer, factory.get(DOOR_OPENED), gameObject);
+        if (gameObject instanceof DoorPrevOpened)
+            return new Sprite(layer, factory.get(DOOR_OPENED), gameObject);
         if (gameObject instanceof Flowers)
             return new Sprite(layer, factory.get(FLOWERS), gameObject);
         if (gameObject instanceof PoisonedApple)

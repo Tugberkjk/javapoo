@@ -66,7 +66,7 @@ public class Level implements Map {
                         decors.put(position, new DoorNextOpened(position));
                         break;
                     case DoorPrevOpened:
-                        decors.put(position, new DoorNextOpened(position));
+                        decors.put(position, new DoorPrevOpened(position));
                         break;
                     case Carrots: {
                         Decor ground = new Land(position);

@@ -145,7 +145,7 @@
 
             Position doorPos = null;
             for (var entry : game.world().getGrid().values()) {
-                if (entry instanceof DoorNextOpened) {
+                if (entry instanceof DoorNextOpened|| entry instanceof DoorPrevOpened) {
                     doorPos = entry.getPosition();
                     break;
                 }

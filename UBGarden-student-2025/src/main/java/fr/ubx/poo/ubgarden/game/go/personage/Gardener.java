@@ -19,6 +19,7 @@ import fr.ubx.poo.ubgarden.game.go.bonus.Bomb;
 import fr.ubx.poo.ubgarden.game.go.decor.DoorNextOpened;
 import java.util.List;
 import java.util.ArrayList;
+import fr.ubx.poo.ubgarden.game.go.decor.DoorPrevOpened;
 
 public class Gardener extends GameObject implements Movable, PickupVisitor, WalkVisitor {
 
@@ -165,6 +166,9 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
         }
         if (decor instanceof DoorNextOpened) {
             game.requestSwitchLevel(getPosition().level() + 1);
+        }
+        if (decor instanceof DoorPrevOpened) {
+            game.requestSwitchLevel(getPosition().level()-1);
         }
         return getPosition();
     }
