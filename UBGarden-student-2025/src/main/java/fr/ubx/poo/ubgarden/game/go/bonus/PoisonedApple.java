@@ -12,8 +12,8 @@ public class PoisonedApple extends Bonus {
 
     @Override
     public void pickUpBy(Gardener g) {
+        g.pickUp(this);
         this.remove();
-        g.increaseFatigue();
         // g.setDisease(true);
     }
 }

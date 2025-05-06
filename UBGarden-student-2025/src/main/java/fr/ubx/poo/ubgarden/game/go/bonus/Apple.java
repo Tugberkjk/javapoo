@@ -13,6 +13,7 @@ public class Apple extends Bonus {
     @Override
     public void pickUpBy(Gardener gardener) {
         gardener.pickUp(new EnergyBoost(this.getPosition(), new Grass(this.getPosition())));
+        gardener.heal();
         this.remove();
     }
 }

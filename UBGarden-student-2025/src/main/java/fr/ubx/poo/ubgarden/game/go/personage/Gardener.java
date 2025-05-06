@@ -17,6 +17,8 @@ import fr.ubx.poo.ubgarden.game.go.bonus.EnergyBoost;
 import fr.ubx.poo.ubgarden.game.go.bonus.PoisonedApple;
 import fr.ubx.poo.ubgarden.game.go.bonus.Bomb;
 import fr.ubx.poo.ubgarden.game.go.decor.DoorNextOpened;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Gardener extends GameObject implements Movable, PickupVisitor, WalkVisitor {
 
@@ -29,6 +31,7 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
     private int bombCount = 0;
     private boolean diseased = false;
     private long diseaseEndTimeNs = 0;  // nanoseconds cinsinden, game loop now ile eşleşsin
+    private List<Long> diseaseEndTimes = new ArrayList<>();
 
 
 
@@ -82,16 +85,20 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
         // Bonus sahneden kaldırılır (EnergyBoost, Apple üstünden gelince underneath Grass olur → hata fırlatmaz)
         energyBoost.remove();
     }
+    public void heal() {
+        diseaseEndTimes.clear();
+        diseased = false;
+        fatigueLevel = 1;
+    }
 
-
-
-
-    public void pickUp(PoisonedApple poisonedApple, long now) {
+    public void pickUp(PoisonedApple poisonedApple) {
+        long endTime = System.nanoTime() + game.configuration().diseaseDuration() * 1_000_000L;
+        diseaseEndTimes.add(endTime);
+        diseased = true;
         increaseFatigue();
-        setDiseased(true);
-        diseaseEndTimeNs = now + (game.configuration().diseaseDuration() * 1_000_000L); // ms → ns
         poisonedApple.remove();
     }
+
 
     public boolean isDiseased() { return diseased; }
 
@@ -180,9 +187,16 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
                 lastEnergyGainTime = now;
             }
         }
-        if (diseased && now > diseaseEndTimeNs) {
-            diseased = false;
-            fatigueLevel = 1;
+        if (!diseaseEndTimes.isEmpty()) {
+            diseaseEndTimes.removeIf(endTime -> now > endTime);
+
+            if (diseaseEndTimes.isEmpty()) {
+                diseased = false;
+                fatigueLevel = 1;
+            } else {
+                diseased = true;
+                fatigueLevel = 1 + diseaseEndTimes.size();
+            }
         }
     }
 
