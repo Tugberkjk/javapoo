@@ -187,7 +187,7 @@
                             gardener.setBombCount(gardener.getBombCount() - 2);
                             hornet.remove();
                         } else {
-                            gardener.hurt(40);
+                            gardener.hurt(30);
                             if (gardener.getEnergy() < 0) {
                                 gardener.setEnergy(0);
                             }
