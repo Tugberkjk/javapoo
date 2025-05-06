@@ -9,6 +9,7 @@ import fr.ubx.poo.ubgarden.game.go.PickupVisitor;
 import fr.ubx.poo.ubgarden.game.go.WalkVisitor;
 import fr.ubx.poo.ubgarden.game.go.decor.Decor;
 import fr.ubx.poo.ubgarden.game.go.decor.*;
+import fr.ubx.poo.ubgarden.game.go.bonus.Bomb;
 
 import fr.ubx.poo.ubgarden.game.*;
 import fr.ubx.poo.ubgarden.game.go.*;
@@ -67,6 +68,12 @@ public class Wasp extends GameObject implements Movable, WalkVisitor {
         if (now - lastMoveTime >= moveInterval) {
             moveRandom();
             lastMoveTime = now;
+        }
+        Decor decor = game.world().getGrid().get(getPosition());
+        if (decor != null && decor.getBonus() instanceof Bomb) {
+            System.out.println("Sinek bombaya bastı ve öldü");
+            decor.getBonus().remove();
+            this.remove();
         }
     }
 }

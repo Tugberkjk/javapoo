@@ -9,6 +9,7 @@ import fr.ubx.poo.ubgarden.game.go.PickupVisitor;
 import fr.ubx.poo.ubgarden.game.go.WalkVisitor;
 import fr.ubx.poo.ubgarden.game.go.decor.Decor;
 import fr.ubx.poo.ubgarden.game.go.decor.*;
+import fr.ubx.poo.ubgarden.game.go.bonus.Bomb;
 
 import fr.ubx.poo.ubgarden.game.*;
 import fr.ubx.poo.ubgarden.game.go.*;
@@ -72,6 +73,16 @@ public class Hornet extends GameObject implements Movable, WalkVisitor {
         if (now - lastMoveTime >= moveInterval) {
             moveRandom();
             lastMoveTime = now;
+        }
+        Decor decor = game.world().getGrid().get(this.getPosition());
+        if (decor != null && decor.getBonus() instanceof Bomb) {
+            System.out.println("Hornet bombaya bastı, hasar aldı!");
+            this.hurt();
+            decor.getBonus().remove();
+            if (this.isDead()) {
+                System.out.println("Hornet ikinci kez bombaya bastı, öldü");
+                this.remove();
+             }
         }
     }
 }
