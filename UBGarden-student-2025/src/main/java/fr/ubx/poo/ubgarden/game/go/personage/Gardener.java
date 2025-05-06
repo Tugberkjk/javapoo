@@ -67,16 +67,23 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
         this.energy = game.configuration().gardenerEnergy();
     }
 
-    @Override
     public void pickUp(EnergyBoost energyBoost) {
-        energy += game.configuration().energyBoost();
-        if (energy > game.configuration().gardenerEnergy()) {
-            energy = game.configuration().gardenerEnergy();
+        int boost = game.configuration().energyBoost();
+        int maxEnergy = game.configuration().gardenerEnergy();
+        int newEnergy = energy + boost;
+
+        if (newEnergy > maxEnergy) {
+            newEnergy = maxEnergy;
         }
-        System.out.println("Energy after apple: " + energy); // test için
+
+        setEnergy(newEnergy);
         fatigueLevel = 1;
+
+        // Bonus sahneden kaldırılır (EnergyBoost, Apple üstünden gelince underneath Grass olur → hata fırlatmaz)
         energyBoost.remove();
     }
+
+
 
 
     public void pickUp(PoisonedApple poisonedApple, long now) {

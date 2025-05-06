@@ -3,6 +3,7 @@ package fr.ubx.poo.ubgarden.game.go.bonus;
 import fr.ubx.poo.ubgarden.game.Position;
 import fr.ubx.poo.ubgarden.game.go.personage.Gardener;
 import fr.ubx.poo.ubgarden.game.go.decor.Decor;
+import fr.ubx.poo.ubgarden.game.go.decor.ground.*;
 
 public class Apple extends Bonus {
     public Apple(Position position, Decor underneath) {
@@ -11,8 +12,7 @@ public class Apple extends Bonus {
 
     @Override
     public void pickUpBy(Gardener gardener) {
-        gardener.setEnergy(gardener.getGame().configuration().gardenerEnergy());
-        gardener.setFatigueLevel(1);
+        gardener.pickUp(new EnergyBoost(this.getPosition(), new Grass(this.getPosition())));
         this.remove();
     }
 }
