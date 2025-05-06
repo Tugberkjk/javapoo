@@ -47,6 +47,9 @@ public class Hornet extends GameObject implements Movable, WalkVisitor {
     public void setEnergy(int energy) {
 
     }
+    public boolean canWalkOn(Decor decor) {
+        return !(decor instanceof Tree || decor instanceof DoorNextClosed);
+    }
 
     @Override
     public boolean canMove(Direction direction) {
@@ -54,12 +57,15 @@ public class Hornet extends GameObject implements Movable, WalkVisitor {
         if (!game.world().getGrid().inside(next)) {
             return false;
         }
+
         Decor decor = game.world().getGrid().get(next);
-        if (decor instanceof DoorNextOpened || decor instanceof DoorNextClosed) {
+        if (decor != null && !decor.walkableBy(this)) {
             return false;
         }
+
         return true;
     }
+
 
     public void moveRandom() {
         Direction dir = Direction.random();

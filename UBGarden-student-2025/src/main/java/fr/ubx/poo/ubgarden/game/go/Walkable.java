@@ -3,6 +3,9 @@ package fr.ubx.poo.ubgarden.game.go;
 
 import fr.ubx.poo.ubgarden.game.go.personage.Gardener;
 
+import fr.ubx.poo.ubgarden.game.go.personage.Wasp;
+import fr.ubx.poo.ubgarden.game.go.personage.Hornet;
+
 public interface Walkable {
 
     /**
@@ -12,6 +15,9 @@ public interface Walkable {
      * @return true if the gardener can walk on it, false otherwise
      */
     boolean walkableBy(Gardener gardener);
+
+    boolean walkableBy(Wasp wasp);
+    boolean walkableBy(Hornet hornet);
 
     /**
      * Returns the amount of energy consumed when walking over this object.
