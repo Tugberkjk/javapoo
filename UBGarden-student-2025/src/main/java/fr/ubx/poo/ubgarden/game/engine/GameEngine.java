@@ -183,6 +183,10 @@
                 if (sprite.getGameObject() instanceof Hornet) {
                     Hornet hornet = (Hornet) sprite.getGameObject();
                     if (hornet.getPosition().equals(gardener.getPosition()) && (now - lastHornetHitTime) >= HORNET_HIT_COOLDOWN) {
+                        hornet.hurt();
+                        if(hornet.isDead()){
+                            hornet.remove();
+                        }
                         if (gardener.getBombCount() >= 2) {
                             gardener.setBombCount(gardener.getBombCount() - 2);
                             hornet.remove();
