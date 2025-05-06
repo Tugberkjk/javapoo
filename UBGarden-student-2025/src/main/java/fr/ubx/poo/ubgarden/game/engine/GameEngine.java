@@ -28,6 +28,7 @@
     import javafx.scene.text.Text;
     import javafx.scene.text.TextAlignment;
     import fr.ubx.poo.ubgarden.game.go.personage.Wasp;
+    import fr.ubx.poo.ubgarden.game.go.personage.Hornet;
 
     import java.util.*;
 
@@ -50,6 +51,9 @@
         private Input input;
         private long lastWaspHitTime = 0; // === NEW: Çarpışma cooldown'u için zaman damgası
         private static final long WASP_HIT_COOLDOWN = 1000; // 1000 ms = 1 saniye
+
+        private long lastHornetHitTime = 0;
+        private static final long HORNET_HIT_COOLDOWN = 1000;
 
 
         public GameEngine(Game game, Scene scene) {
@@ -168,11 +172,27 @@
                             wasp.remove();
                         } else {
                             gardener.hurt(20);
+                            wasp.remove();
                             if (gardener.getEnergy() < 0) {
-                                gardener.setEnergy(0); // Enerji sıfırın altına inmesin
+                                gardener.setEnergy(0);
                             }
                         }
                         lastWaspHitTime = now;
+                    }
+                }
+                if (sprite.getGameObject() instanceof Hornet) {
+                    Hornet hornet = (Hornet) sprite.getGameObject();
+                    if (hornet.getPosition().equals(gardener.getPosition()) && (now - lastHornetHitTime) >= HORNET_HIT_COOLDOWN) {
+                        if (gardener.getBombCount() >= 2) {
+                            gardener.setBombCount(gardener.getBombCount() - 2);
+                            hornet.remove();
+                        } else {
+                            gardener.hurt(40);
+                            if (gardener.getEnergy() < 0) {
+                                gardener.setEnergy(0);
+                            }
+                        }
+                        lastHornetHitTime = now;
                     }
                 }
             }
@@ -249,6 +269,12 @@
                 wasp.update(now);
                 if (sprites.stream().noneMatch(s -> s.getGameObject() == wasp)) {
                     sprites.add(SpriteFactory.create(layer, wasp));
+                }
+            }
+            for (Hornet hornet : game.getActiveHornets()) {
+                hornet.update(now);
+                if (sprites.stream().noneMatch(s -> s.getGameObject() == hornet)) {
+                    sprites.add(SpriteFactory.create(layer, hornet));
                 }
             }
             for (var decor : game.world().getGrid().values()) {

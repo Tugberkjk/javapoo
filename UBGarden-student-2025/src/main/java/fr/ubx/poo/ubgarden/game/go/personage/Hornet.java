@@ -13,14 +13,24 @@ import fr.ubx.poo.ubgarden.game.go.decor.*;
 import fr.ubx.poo.ubgarden.game.*;
 import fr.ubx.poo.ubgarden.game.go.*;
 
-public class Wasp extends GameObject implements Movable, WalkVisitor {
+public class Hornet extends GameObject implements Movable, WalkVisitor {
     private Direction direction = Direction.random();
     private long lastMoveTime = 0;
     private final long moveInterval;
 
-    public Wasp(Game game, Position position) {
+    private int health = 2;
+
+    public void hurt() {
+        health--;
+    }
+
+    public boolean isDead() {
+        return health <= 0;
+    }
+
+    public Hornet(Game game, Position position) {
         super(game, position);
-        this.moveInterval = game.configuration().waspMoveFrequency()* 1_000_000_000L;
+        this.moveInterval = game.configuration().hornetMoveFrequency()* 1_000_000_000L;
     }
 
     public Direction getDirection() {
@@ -43,15 +53,10 @@ public class Wasp extends GameObject implements Movable, WalkVisitor {
         if (!game.world().getGrid().inside(next)) {
             return false;
         }
-
         Decor decor = game.world().getGrid().get(next);
-
-        // Eğer next hücrede açık veya kapalı kapı varsa → geçemez
         if (decor instanceof DoorNextOpened || decor instanceof DoorNextClosed) {
             return false;
         }
-
-        // Eğer hiç dekor yoksa veya diğer her durumda → geçilebilir
         return true;
     }
 

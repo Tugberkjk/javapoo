@@ -55,7 +55,7 @@ public class Level implements Map {
                         break;
 
                     case NestHornet:
-                        decors.put(position, new NestHornet(position));
+                        decors.put(position, new NestHornet(game,position));
                         break;
 
                     case DoorNextClosed:

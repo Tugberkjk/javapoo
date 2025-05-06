@@ -55,6 +55,9 @@ public class ImageResourceFactory {
     public Image getWasp(Direction direction) {
         return get(ImageResource.valueOf("WASP_" + direction));
     }
+    public Image getHornet(Direction direction) {
+        return get(ImageResource.valueOf("HORNET_" + direction));
+    }
 
     private static class LoadSingleton {
         static final ImageResourceFactory INSTANCE = new ImageResourceFactory();

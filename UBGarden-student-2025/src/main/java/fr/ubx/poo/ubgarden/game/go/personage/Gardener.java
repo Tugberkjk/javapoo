@@ -73,9 +73,11 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
         if (energy > game.configuration().gardenerEnergy()) {
             energy = game.configuration().gardenerEnergy();
         }
+        System.out.println("Energy after apple: " + energy); // test için
         fatigueLevel = 1;
         energyBoost.remove();
     }
+
 
     public void pickUp(PoisonedApple poisonedApple, long now) {
         increaseFatigue();

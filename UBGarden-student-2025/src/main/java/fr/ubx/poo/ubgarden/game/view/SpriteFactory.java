@@ -13,6 +13,8 @@ import fr.ubx.poo.ubgarden.game.go.bonus.*;
 import fr.ubx.poo.ubgarden.game.view.SpriteWasp;
 import fr.ubx.poo.ubgarden.game.go.personage.Wasp;
 import fr.ubx.poo.ubgarden.game.go.decor.NestWasp;
+import fr.ubx.poo.ubgarden.game.view.SpriteHornet;
+import fr.ubx.poo.ubgarden.game.go.personage.Hornet;
 
 
 import static fr.ubx.poo.ubgarden.game.view.ImageResource.*;
@@ -50,6 +52,8 @@ public final class SpriteFactory {
             return new Sprite(layer, factory.get(NESTHORNET), gameObject);
         if (gameObject instanceof Wasp)
             return new SpriteWasp(layer, (Wasp) gameObject);
+        if (gameObject instanceof Hornet)
+            return new SpriteHornet(layer, (Hornet) gameObject);
 
 
         throw new RuntimeException("Unsupported sprite for decor " + gameObject);
