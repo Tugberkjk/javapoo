@@ -111,7 +111,13 @@ public class GameLauncher {
 
             for (int level = 0; level < nbLevels; level++) {
                 String rawLevelStr = props.getProperty("level" + (level + 1));
-                String levelStr = decompressLine(rawLevelStr);
+                String levelStr;
+                if (!compression) {
+                    levelStr = rawLevelStr.replace('x', '\n');
+                } else {
+                    levelStr = decompressLine(rawLevelStr);
+                }
+
                 System.out.println("Decompressed level string (level " + (level + 1) + "):\n" + levelStr);
 
                 String[] lines = levelStr.split("\n");
