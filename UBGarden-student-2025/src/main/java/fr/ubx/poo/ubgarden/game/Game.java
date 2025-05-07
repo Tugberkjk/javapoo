@@ -45,6 +45,15 @@ public class Game {
         this.switchLevel = level;
         switchLevelRequested = true;
     }
+    private Position lastDoorEntered;
+
+    public void setLastDoorEntered(Position pos) {
+        this.lastDoorEntered = pos;
+    }
+
+    public Position getLastDoorEntered() {
+        return this.lastDoorEntered;
+    }
 
     public void clearSwitchLevel() {
         switchLevelRequested = false;

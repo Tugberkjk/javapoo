@@ -138,6 +138,7 @@
                 return;
 
             int nextLevel = game.getSwitchLevel();
+            int currentLevel = game.world().currentLevel();
 
             if (game.world().getGrid(nextLevel) == null) {
                 System.out.println("Level " + nextLevel + " not loaded!");
@@ -150,19 +151,25 @@
             game.world().setCurrentLevel(nextLevel);
 
 
-            Position doorPos = null;
-            for (var entry : game.world().getGrid().values()) {
-                if (entry instanceof DoorNextOpened|| entry instanceof DoorPrevOpened) {
-                    doorPos = entry.getPosition();
+            Position entryPos = game.getLastDoorEntered();
+            Position spawnPos = null;
+            for (var decor : game.world().getGrid().values()) {
+                if (entryPos == null) break;
+
+                if (entryPos.level() < nextLevel && decor instanceof DoorPrevOpened) {
+                    spawnPos = decor.getPosition();
+                    break;
+                } else if (entryPos.level() > nextLevel && decor instanceof DoorNextOpened) {
+                    spawnPos = decor.getPosition();
                     break;
                 }
             }
 
-            if (doorPos == null) {
+            if (spawnPos == null) {
                 System.out.println("No DoorNextOpened found in level " + nextLevel);
-                doorPos = new Position(nextLevel, 0, 0);
+                spawnPos = new Position(nextLevel, 0, 0);
             }
-            gardener.setPosition(doorPos);
+            gardener.setPosition(spawnPos);
             game.clearSwitchLevel();
             initialize();
         }

@@ -164,9 +164,11 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
             setEnergy(getEnergy() - 1 * getFatigueLevel());
         }
         if (decor instanceof DoorNextOpened) {
+            game.setLastDoorEntered(getPosition());
             game.requestSwitchLevel(getPosition().level() + 1);
         }
         if (decor instanceof DoorPrevOpened) {
+            game.setLastDoorEntered(getPosition());
             game.requestSwitchLevel(getPosition().level()-1);
         }
         return getPosition();
