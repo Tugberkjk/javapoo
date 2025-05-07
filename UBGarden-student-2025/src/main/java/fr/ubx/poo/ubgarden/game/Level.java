@@ -6,6 +6,11 @@ import fr.ubx.poo.ubgarden.game.go.decor.ground.Grass;
 import fr.ubx.poo.ubgarden.game.launcher.MapEntity;
 import fr.ubx.poo.ubgarden.game.launcher.MapLevel;
 import fr.ubx.poo.ubgarden.game.go.bonus.*;
+import fr.ubx.poo.ubgarden.game.go.personage.Wasp;
+import fr.ubx.poo.ubgarden.game.go.personage.Hornet;
+import java.util.List;
+import java.util.ArrayList;
+import fr.ubx.poo.ubgarden.game.Game;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -20,6 +25,26 @@ public class Level implements Map {
     private final int height;
 
     private final java.util.Map<Position, Decor> decors = new HashMap<>();
+
+    private final List<Wasp> activeWasps = new ArrayList<>();
+    private final List<Hornet> activeHornets = new ArrayList<>();
+
+    public void addActiveWasp(Wasp wasp) {
+        activeWasps.add(wasp);
+    }
+
+    public List<Wasp> getActiveWasps() {
+        return activeWasps;
+    }
+
+    public void addActiveHornet(Hornet hornet) {
+        activeHornets.add(hornet);
+    }
+
+    public List<Hornet> getActiveHornets() {
+        return activeHornets;
+    }
+
 
     public Level(Game game, int level, MapLevel entities) {
         this.level = level;

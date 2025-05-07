@@ -52,7 +52,8 @@ public class NestWasp extends Decor {
     private void spawnWasp(long now) {
         Position pos = this.getPosition();
         Wasp wasp = new Wasp(game, pos);
-        game.addActiveWasp(wasp);
+        Level level = (Level) game.world().getGrid(game.world().currentLevel());
+        level.addActiveWasp(wasp);
         Position bombPos = findRandomDecorWithoutBonus();
         if (bombPos != null) {
             Decor decorAtPos = (Decor) game.world().getGrid().get(bombPos);

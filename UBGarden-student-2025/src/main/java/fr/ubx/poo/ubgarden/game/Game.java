@@ -13,24 +13,7 @@ public class Game {
     private final Gardener gardener;
     private boolean switchLevelRequested = false;
     private int switchLevel;
-    private final List<Wasp> activeWasps = new ArrayList<>();
-    private final List<Hornet> activeHornets = new ArrayList<>();
 
-    public void addActiveWasp(Wasp wasp) {
-        activeWasps.add(wasp);
-    }
-
-    public List<Wasp> getActiveWasps() {
-        return activeWasps;
-    }
-
-    public void addActiveHornet(Hornet hornet) {
-        activeHornets.add(hornet);
-    }
-
-    public List<Hornet> getActiveHornets() {
-        return activeHornets;
-    }
 
     public Game(World world, Configuration configuration, Position gardenerPosition) {
         this.configuration = configuration;

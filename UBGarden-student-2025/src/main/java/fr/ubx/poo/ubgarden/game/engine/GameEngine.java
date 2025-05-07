@@ -84,8 +84,8 @@
             rootPane.setPrefSize(sceneWidth, sceneHeight + StatusBar.height);
             rootPane.getChildren().add(root);
 
-            // Create sprites
-            int currentLevel = game.world().currentLevel();
+            int currentLevelNum = game.world().currentLevel();
+            Level currentLevel = (Level) game.world().getGrid(currentLevelNum);
 
             for (var decor : game.world().getGrid().values()) {
                 sprites.add(SpriteFactory.create(layer, decor));
@@ -99,11 +99,18 @@
 
             sprites.add(new SpriteGardener(layer, gardener));
             resizeScene(sceneWidth, sceneHeight);
-            for (var wasp : game.getActiveWasps()) {
+
+            for (var wasp : currentLevel.getActiveWasps()) {
                 sprites.add(SpriteFactory.create(layer, wasp));
                 wasp.setModified(true);
             }
+
+            for (var hornet : currentLevel.getActiveHornets()) {
+                sprites.add(SpriteFactory.create(layer, hornet));
+                hornet.setModified(true);
+            }
         }
+
 
         void buildAndSetGameLoop() {
             gameLoop = new AnimationTimer() {
@@ -163,10 +170,15 @@
         // Check a collision between the gardener and a wasp or an hornet
         private void checkCollision() {
             long now = System.currentTimeMillis();
+            Level currentLevel = (Level) game.world().getGrid(game.world().currentLevel());
+
             for (Sprite sprite : sprites) {
                 if (sprite.getGameObject() instanceof Wasp) {
                     Wasp wasp = (Wasp) sprite.getGameObject();
-                    if (wasp.getPosition().equals(gardener.getPosition()) && (now - lastWaspHitTime) >= WASP_HIT_COOLDOWN) {
+                    if (currentLevel.getActiveWasps().contains(wasp)
+                            && wasp.getPosition().equals(gardener.getPosition())
+                            && (now - lastWaspHitTime) >= WASP_HIT_COOLDOWN) {
+
                         if (gardener.getBombCount() > 0) {
                             gardener.setBombCount(gardener.getBombCount() - 1);
                             wasp.remove();
@@ -180,13 +192,18 @@
                         lastWaspHitTime = now;
                     }
                 }
+
                 if (sprite.getGameObject() instanceof Hornet) {
                     Hornet hornet = (Hornet) sprite.getGameObject();
-                    if (hornet.getPosition().equals(gardener.getPosition()) && (now - lastHornetHitTime) >= HORNET_HIT_COOLDOWN) {
+                    if (currentLevel.getActiveHornets().contains(hornet)
+                            && hornet.getPosition().equals(gardener.getPosition())
+                            && (now - lastHornetHitTime) >= HORNET_HIT_COOLDOWN) {
+
                         hornet.hurt();
-                        if(hornet.isDead()){
+                        if (hornet.isDead()) {
                             hornet.remove();
                         }
+
                         if (gardener.getBombCount() >= 2) {
                             gardener.setBombCount(gardener.getBombCount() - 2);
                             hornet.remove();
@@ -201,6 +218,7 @@
                 }
             }
         }
+
 
 
 
@@ -253,6 +271,7 @@
                 gameLoop.stop();
                 showMessage("Perdu!", Color.RED);
             }
+
             boolean carrotsRemaining = game.world().getGrid().values().stream()
                     .anyMatch(decor -> decor != null && decor.getBonus() instanceof Carrots);
 
@@ -269,18 +288,23 @@
                 }
             }
 
-            for (Wasp wasp : game.getActiveWasps()) {
+            // ✅ Yeni: yaratıkları aktif seviyeden al
+            Level currentLevel = (Level) game.world().getGrid(game.world().currentLevel());
+
+            for (Wasp wasp : currentLevel.getActiveWasps()) {
                 wasp.update(now);
                 if (sprites.stream().noneMatch(s -> s.getGameObject() == wasp)) {
                     sprites.add(SpriteFactory.create(layer, wasp));
                 }
             }
-            for (Hornet hornet : game.getActiveHornets()) {
+
+            for (Hornet hornet : currentLevel.getActiveHornets()) {
                 hornet.update(now);
                 if (sprites.stream().noneMatch(s -> s.getGameObject() == hornet)) {
                     sprites.add(SpriteFactory.create(layer, hornet));
                 }
             }
+
             for (var decor : game.world().getGrid().values()) {
                 var bonus = decor.getBonus();
                 if (bonus != null && sprites.stream().noneMatch(s -> s.getGameObject() == bonus)) {
@@ -288,8 +312,8 @@
                     bonus.setModified(true);
                 }
             }
-
         }
+
 
 
         public void cleanupSprites() {

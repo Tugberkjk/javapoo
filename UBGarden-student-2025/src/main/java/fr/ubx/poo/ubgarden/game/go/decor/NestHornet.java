@@ -51,7 +51,8 @@ public class NestHornet extends Decor {
     private void spawnHornet(long now) {
         Position pos = this.getPosition();
         Hornet hornet = new Hornet(game, pos);
-        game.addActiveHornet(hornet);
+        Level level = (Level) game.world().getGrid(game.world().currentLevel());
+        level.addActiveHornet(hornet);
         for (int i = 0; i < 2; i++) {
             Position bombPos = findRandomDecorWithoutBonus();
             if (bombPos != null) {
