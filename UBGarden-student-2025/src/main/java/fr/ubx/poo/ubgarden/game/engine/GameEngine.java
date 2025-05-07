@@ -175,7 +175,7 @@
             for (Sprite sprite : sprites) {
                 if (sprite.getGameObject() instanceof Wasp) {
                     Wasp wasp = (Wasp) sprite.getGameObject();
-                    if (currentLevel.getActiveWasps().contains(wasp)
+                    if (!wasp.isDeleted() &&currentLevel.getActiveWasps().contains(wasp)
                             && wasp.getPosition().equals(gardener.getPosition())
                             && (now - lastWaspHitTime) >= WASP_HIT_COOLDOWN) {
 

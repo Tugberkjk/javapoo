@@ -17,6 +17,7 @@ public interface Walkable {
     boolean walkableBy(Gardener gardener);
 
     boolean walkableBy(Wasp wasp);
+
     boolean walkableBy(Hornet hornet);
 
     /**
