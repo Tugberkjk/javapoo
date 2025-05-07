@@ -288,7 +288,7 @@
                 }
             }
 
-            // ✅ Yeni: yaratıkları aktif seviyeden al
+
             Level currentLevel = (Level) game.world().getGrid(game.world().currentLevel());
 
             for (Wasp wasp : currentLevel.getActiveWasps()) {

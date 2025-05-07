@@ -24,7 +24,6 @@ public class GameLauncher {
 
     private Configuration getConfiguration(Properties properties) {
 
-        // Load parameters
         int waspMoveFrequency = integerProperty(properties, "waspMoveFrequency", 2);
         int hornetMoveFrequency = integerProperty(properties, "hornetMoveFrequency", 1);
 
@@ -45,11 +44,10 @@ public class GameLauncher {
             char current = line.charAt(i);
 
             if (current == 'x') {
-                result.append('\n'); // Satır sonu olarak kabul ediyoruz
+                result.append('\n');
                 i++;
             }
             else if (Character.isLetter(current) || current == '+' || current == '-' || current == '<' || current == '>' || current == 'P') {
-                // Gx12 veya benzeri
                 if (i + 2 < line.length() && line.charAt(i + 1) == 'x' && Character.isDigit(line.charAt(i + 2))) {
                     int j = i + 2;
                     StringBuilder numStr = new StringBuilder();
@@ -61,7 +59,6 @@ public class GameLauncher {
                     result.append(String.valueOf(current).repeat(repeat));
                     i = j;
                 }
-                // G12 gibi
                 else if (i + 1 < line.length() && Character.isDigit(line.charAt(i + 1))) {
                     int j = i + 1;
                     StringBuilder numStr = new StringBuilder();
@@ -79,7 +76,6 @@ public class GameLauncher {
                     i++;
                 }
             }
-            // Sayı veya geçersiz karakterler varsa geç
             else if (Character.isDigit(current)) {
                 i++;
             }
@@ -110,9 +106,9 @@ public class GameLauncher {
             Configuration configuration = getConfiguration(props);
             World world = new World(nbLevels);
             Position gardenerPosition = null;
-            MapLevel[] mapLevels = new MapLevel[nbLevels]; // eklendi: map seviyelerini geçici saklamak için
+            MapLevel[] mapLevels = new MapLevel[nbLevels];
 
-            // Önce tüm haritaları yükle, gardener pozisyonunu yakala
+
             for (int level = 0; level < nbLevels; level++) {
                 String rawLevelStr = props.getProperty("level" + (level + 1));
                 String levelStr = decompressLine(rawLevelStr);
@@ -137,15 +133,14 @@ public class GameLauncher {
                         throw new RuntimeException("Gardener not found in level 1");
                 }
 
-                mapLevels[level] = mapLevel; // eklendi: geçici olarak sakla
+                mapLevels[level] = mapLevel;
             }
 
-            // Gardener pozisyonu bulundu → şimdi Game yarat
-            Game game = new Game(world, configuration, gardenerPosition); // değiştirildi: game nesnesi önce yaratıldı
 
-            // Şimdi level’ları game ile yarat
+            Game game = new Game(world, configuration, gardenerPosition);
+
             for (int level = 0; level < nbLevels; level++) {
-                Level levelMap = new Level(game, level + 1, mapLevels[level]); // değiştirildi: null yerine game geçirildi
+                Level levelMap = new Level(game, level + 1, mapLevels[level]);
                 world.put(level + 1, levelMap);
             }
 

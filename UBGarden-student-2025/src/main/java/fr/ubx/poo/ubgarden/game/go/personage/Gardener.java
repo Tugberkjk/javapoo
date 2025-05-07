@@ -83,7 +83,6 @@ public class Gardener extends GameObject implements Movable, PickupVisitor, Walk
         setEnergy(newEnergy);
         fatigueLevel = 1;
 
-        // Bonus sahneden kaldırılır (EnergyBoost, Apple üstünden gelince underneath Grass olur → hata fırlatmaz)
         energyBoost.remove();
     }
     public void heal() {

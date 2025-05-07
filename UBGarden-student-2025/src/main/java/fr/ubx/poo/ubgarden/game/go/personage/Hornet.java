@@ -82,11 +82,11 @@ public class Hornet extends GameObject implements Movable, WalkVisitor {
         }
         Decor decor = game.world().getGrid().get(this.getPosition());
         if (decor != null && decor.getBonus() instanceof Bomb) {
-            System.out.println("Hornet bombaya bastı, hasar aldı!");
+            System.out.println("Hornet collided with bomb and took damage!");
             this.hurt();
             decor.getBonus().remove();
             if (this.isDead()) {
-                System.out.println("Hornet ikinci kez bombaya bastı, öldü");
+                System.out.println("Hornet collided with bomb for second time and died");
                 this.remove();
              }
         }

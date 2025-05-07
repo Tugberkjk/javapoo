@@ -43,7 +43,6 @@ public class MapLevel {
                     if (gardenerPosition != null)
                         throw new RuntimeException("Multiple definition of gardener");
                     set(i, j, Grass);
-                    // Gardener can be only on level 1
                     gardenerPosition = new Position(1, i, j);
                 }
         return gardenerPosition;

@@ -23,7 +23,6 @@ public class GameLauncherView extends BorderPane {
 
     public GameLauncherView(Stage stage) {
         this.stage = stage;
-        // Create menu
         MenuBar menuBar = new MenuBar();
 
         Menu menuGame = new Menu("Game");
@@ -53,7 +52,6 @@ public class GameLauncherView extends BorderPane {
         this.setCenter(scene);
         stage.setResizable(false);
 
-        // Load from file
         loadItem.setOnAction(e -> {
             File file = fileChooser.showOpenDialog(stage);
             if (file != null) {
@@ -66,7 +64,7 @@ public class GameLauncherView extends BorderPane {
                     resizeStage();
                 } catch (Exception ex) {
                     ex.printStackTrace();
-                    System.out.printf("[ERROR] Oyunu yüklerken bir hata oluştu: %s%n", ex.getMessage());
+                    System.out.printf("Error while loading game: %s%n", ex.getMessage());
                 }
             }
         });
@@ -84,7 +82,6 @@ public class GameLauncherView extends BorderPane {
             System.err.println("[TODO] Not implemented");
         });
 
-        // Exit
         exitItem.setOnAction(e -> System.exit(0));
 
     }

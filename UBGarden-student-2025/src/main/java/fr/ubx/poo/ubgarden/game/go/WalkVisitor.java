@@ -25,5 +25,5 @@ public interface WalkVisitor {
         return false;
     }
 
-    // TODO
+
 }

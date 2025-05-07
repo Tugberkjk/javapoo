@@ -72,7 +72,7 @@ public class Wasp extends GameObject implements Movable, WalkVisitor {
         }
         Decor decor = game.world().getGrid().get(getPosition());
         if (decor != null && decor.getBonus() instanceof Bomb) {
-            System.out.println("Sinek bombaya bastı ve öldü");
+            System.out.println("Wasp collided with bomb and died");
             decor.getBonus().remove();
             this.remove();
         }
