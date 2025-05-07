@@ -175,7 +175,7 @@
             for (Sprite sprite : sprites) {
                 if (sprite.getGameObject() instanceof Wasp) {
                     Wasp wasp = (Wasp) sprite.getGameObject();
-                    if (!wasp.isDeleted() &&currentLevel.getActiveWasps().contains(wasp)
+                    if (!wasp.isDeleted() && currentLevel.getActiveWasps().contains(wasp)
                             && wasp.getPosition().equals(gardener.getPosition())
                             && (now - lastWaspHitTime) >= WASP_HIT_COOLDOWN) {
 
@@ -195,7 +195,7 @@
 
                 if (sprite.getGameObject() instanceof Hornet) {
                     Hornet hornet = (Hornet) sprite.getGameObject();
-                    if (currentLevel.getActiveHornets().contains(hornet)
+                    if (!hornet.isDeleted() &&currentLevel.getActiveHornets().contains(hornet)
                             && hornet.getPosition().equals(gardener.getPosition())
                             && (now - lastHornetHitTime) >= HORNET_HIT_COOLDOWN) {
 
